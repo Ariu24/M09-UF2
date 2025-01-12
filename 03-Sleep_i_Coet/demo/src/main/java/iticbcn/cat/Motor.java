@@ -1,43 +1,68 @@
 package iticbcn.cat;
-
-import java.util.Random;
-
 public class Motor extends Thread {
-    private int iPotenciaActual = 0;
-    private int iPotenciaObjectiu = 0;
+    private int potenciaActual = 0;
+    private int potenciaObjectiu = 0;
+    private boolean running = true;
+    private boolean stopped = false;
+    private boolean waiting = false;
 
-    public Motor(String nom) {
-        super(nom);
-    }
-
-    public void setiPotenciaActual(int potencia) {
-        this.iPotenciaActual = potencia;
-    }
-
-    public void setiPotenciaObjectiu(int potencia) {
-        this.iPotenciaObjectiu = potencia;
+    public synchronized void setPotencia(int p) {
+        this.potenciaObjectiu = p;
+        this.waiting = false;  // engegar el motor quan li arriba una potencia nova introduïda per l'usuari
+        if (stopped && p > 0) {
+            stopped = false;
+            running = true;
+            Thread newThread = new Thread(this);
+            newThread.start();
+        }
     }
 
     @Override
     public void run() {
-        try {
-            String nombre = getName();
-            while(true){
-                while (iPotenciaActual != iPotenciaObjectiu) {
-                    if (iPotenciaActual < iPotenciaObjectiu) {
-                        iPotenciaActual++;
-                        System.out.println(nombre + " : Incre. Objectiu : " + iPotenciaObjectiu + " Actual : " + iPotenciaActual);
-                    } else if (iPotenciaActual > iPotenciaObjectiu) {
-                        iPotenciaActual--;
-                        System.out.println(nombre + " : Decre. Objectiu : " + iPotenciaObjectiu + " Actual : " + iPotenciaActual);
+        while (running) {
+            if (!waiting) {  //només es fara cuan el motor no estigui esperant
+                if (potenciaActual < potenciaObjectiu) {
+                    potenciaActual++;
+                    if (potenciaActual < potenciaObjectiu) {
+                        System.out.println("Motor " + Thread.currentThread().getId() % 4 + 
+                            ": Incre. Objectiu: " + potenciaObjectiu + " Actual: " + potenciaActual);
+                    } else {
+                        System.out.println("Motor " + Thread.currentThread().getId() % 4 + 
+                            ": FerRes Objectiu: " + potenciaObjectiu + " Actual: " + potenciaActual);
+                        waiting = true;  //esperar a que l'usuari introdueixi una nova potencia
                     }
-                    Thread.sleep(new Random().nextInt(2000));
+                } else if (potenciaActual > potenciaObjectiu) {
+                    potenciaActual--;
+                    if (potenciaActual > potenciaObjectiu) {
+                        System.out.println("Motor " + Thread.currentThread().getId() % 4 + 
+                            ": Decre. Objectiu: " + potenciaObjectiu + " Actual: " + potenciaActual);
+                    } else {
+                        System.out.println("Motor " + Thread.currentThread().getId() % 4 + 
+                            ": FerRes Objectiu: " + potenciaObjectiu + " Actual: " + potenciaActual);
+                        if (potenciaObjectiu == 0) {
+                            running = false;
+                            stopped = true;
+                            break;
+                        }
+                        waiting = true;  // Esperar a l'usuari nova potencia
+                    }
+                } else {
+                    System.out.println("Motor " + Thread.currentThread().getId() % 4 + 
+                        ": FerRes Objectiu: " + potenciaObjectiu + " Actual: " + potenciaActual);
+                    if (potenciaObjectiu == 0) {
+                        running = false;
+                        stopped = true;
+                        break;
+                    }
+                    waiting = true; 
                 }
-                break;
             }
-            System.out.println(nombre + " : FerRes Objectiu : " + iPotenciaObjectiu + " Actual : " + iPotenciaActual);
-        } catch (InterruptedException e) {
-            System.out.println(getName() + " s'ha trencat el motor.");
+
+            try {
+                Thread.sleep((long) (Math.random() * 1000 + 1000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
