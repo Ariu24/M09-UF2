@@ -19,13 +19,17 @@ public class Soci extends Thread {
         for (int i = 0; i < maxAnys; i++) {
             for (int x = 0; x < 12; x++) {
                 if (x % 2 == 0) {
-                    float current = compte.getSaldo();
-                    current += aportacio;
-                    compte.setSaldo(current);
+                    synchronized (compte) {
+                        float current = compte.getSaldo();
+                        current += aportacio;
+                        compte.setSaldo(current);
+                    }
                 } else {
-                    float current = compte.getSaldo();
-                    current -= aportacio;
-                    compte.setSaldo(current);
+                    synchronized (compte) {
+                        float current = compte.getSaldo();
+                        current -= aportacio;
+                        compte.setSaldo(current);
+                    }
                 }
                 try {
                     Thread.sleep(random.nextInt(esperaMax));
