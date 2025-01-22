@@ -3,13 +3,13 @@ package com.example;
 import java.util.Random;
 
 public class Treballador extends Thread{
-    public int SOU_ANUAL_BRUT;
-    public int edat_inici_treballador;
-    public int edat_fi_treballador;
-    public int edat_actual;
-    public double cobrat;
+    public float SOU_ANUAL_BRUT;
+    public float edat_inici_treballador;
+    public float edat_fi_treballador;
+    public float edat_actual;
+    public float cobrat;
     public Random rnd;
-    public Treballador(String nom, int SOU_ANUAL_BRUT, int edat_inici_treballador, int edat_fi_treballador, int edad_actual, double cobrat){
+    public Treballador(String nom, float SOU_ANUAL_BRUT, float edat_inici_treballador, float edat_fi_treballador, float edad_actual, float cobrat){
         super(nom);
         this.SOU_ANUAL_BRUT = SOU_ANUAL_BRUT;
         this.edat_inici_treballador = edat_inici_treballador;
@@ -19,11 +19,11 @@ public class Treballador extends Thread{
         this.rnd = new Random();
 
     }
-    public int getEdat_actual() {
+    public float getEdat_actual() {
         return edat_actual;
     }
 
-    public double getCobrat() {
+    public float getCobrat() {
         return cobrat;
     }
 
@@ -35,7 +35,7 @@ public class Treballador extends Thread{
         this.cobrat = this.cobrat + (SOU_ANUAL_BRUT /12);
     }
     public void pagaImpostos(){
-        this.cobrat = this.cobrat - ((SOU_ANUAL_BRUT /12) * 0.24); 
+        this.cobrat = this.cobrat - (float)((SOU_ANUAL_BRUT / 12) * 0.24);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Treballador extends Thread{
     @Override
     public String toString() {
         // Formatea cobrat para que se muestre con dos decimales
-        String result = this.getName() + " -> edat: " + this.edat_actual + " / total: " + String.format("%.2f", this.cobrat);
+        String result = this.getName() + " -> edat: " + this.edat_actual + " / total: " +  this.cobrat;
         return result;
     }
 
