@@ -11,7 +11,17 @@ public class Forquilla {
     }
 
     private boolean enUs = false;  
-    
+    public boolean agafar() {
+        if (!enUs) {
+            enUs = true;
+            return true;
+        }
+        return false;
+    }
+
+    public void deixar() {
+        enUs = false;
+    }
     public boolean isEnUs() {
         return enUs;
     }

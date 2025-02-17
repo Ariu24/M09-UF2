@@ -48,33 +48,28 @@ public class Filosof extends Thread {
         while (true) {
             if (!this.forquillaEsquerra.isEnUs()) {
                 this.forquillaEsquerra.setEnUs(true);
-                System.out.println("Filòsof: " + this.getNom() + " agafa la forquilla esquerra "
-                        + this.getForquillaEsquerra().getForquilla());
+                System.out.println("Filòsof: " + this.getNom() + " agafa la forquilla esquerra " + this.forquillaEsquerra.getForquilla());
+                
                 if (!this.forquillaDreta.isEnUs()) {
                     this.forquillaDreta.setEnUs(true);
-                    System.out.println("Filòsof: " + this.getNom() + " agafa la forquilla dreta "
-                            + this.getForquillaDreta().getForquilla());
+                    System.out.println("Filòsof: " + this.getNom() + " agafa la forquilla dreta " + this.forquillaDreta.getForquilla());
                     this.gana = 0;
                     System.out.println("Filòsof: " + this.getNom() + " menja");
-                    Random rand = new Random();
-                    int tiempo = rand.nextInt(1000) + 1000;
                     try {
-                        Thread.sleep(tiempo);
+                        Thread.sleep(new Random().nextInt(1000) + 1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     this.forquillaDreta.setEnUs(false);
+                    this.forquillaEsquerra.setEnUs(false);
                     return;
                 } else {
                     this.gana++;
                     System.out.println("Filòsof: " + this.getNom() + " gana=" + this.gana);
-                    System.out.println("Filòsof: " + this.getNom() + " deixa l'esquerra ("
-                            + this.getForquillaEsquerra().getForquilla() + ") i espera (dreta ocupada)");
+                    System.out.println("Filòsof: " + this.getNom() + " deixa l'esquerra (" + this.forquillaEsquerra.getForquilla() + ") i espera (dreta ocupada)");
                     this.forquillaEsquerra.setEnUs(false);
-                    Random rand = new Random();
-                    int tiempo = rand.nextInt(501) + 500;
                     try {
-                        Thread.sleep(tiempo);
+                        Thread.sleep(new Random().nextInt(501) + 500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -82,19 +77,14 @@ public class Filosof extends Thread {
             } else {
                 this.gana++;
                 System.out.println("Filòsof: " + this.getNom() + " gana=" + this.gana);
-                Random rand = new Random();
-                int tiempo = rand.nextInt(501) + 500;
                 try {
-                    Thread.sleep(tiempo);
+                    Thread.sleep(new Random().nextInt(501) + 500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
         }
-
     }
-
     public void pensar() {
         Random rand = new Random();
         int tiempo = rand.nextInt(1000) + 1000;
