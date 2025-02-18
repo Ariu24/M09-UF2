@@ -60,6 +60,8 @@ public class Filosof extends Thread {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    System.out.println("Filòsof: " + this.getNom() + " ha acabat de menjar");
+                    this.pensar();
                     this.forquillaDreta.setEnUs(false);
                     this.forquillaEsquerra.setEnUs(false);
                     return;
@@ -86,6 +88,7 @@ public class Filosof extends Thread {
         }
     }
     public void pensar() {
+        System.out.println("Filòsof: " + this.getNom() +" pensant");
         Random rand = new Random();
         int tiempo = rand.nextInt(1000) + 1000;
         try {
