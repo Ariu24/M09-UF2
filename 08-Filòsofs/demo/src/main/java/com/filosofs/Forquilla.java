@@ -25,27 +25,20 @@ public class Forquilla {
         this.forquilla = forquilla;
     }
 
-    private boolean enUs = false;  
-    public boolean agafar() {
-        if (!enUs) {
-            enUs = true;
+    public boolean agafar(int propietari) {
+        if (this.propietari == LLIURE) {
+            this.propietari = propietari;
             return true;
         }
         return false;
     }
 
     public void deixar() {
-        enUs = false;
-    }
-    public boolean isEnUs() {
-        return enUs;
-    }
-
-    public void setEnUs(boolean enUs) {
-        this.enUs = enUs;
+        this.propietari = LLIURE;
     }
 
     public Forquilla(int forquilla) {
         this.forquilla = forquilla;
-    }  
+        this.propietari = LLIURE;
+    }
 }
