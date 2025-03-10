@@ -64,7 +64,6 @@ public class Filosof extends Thread {
 
     private void agafarForquilles() throws InterruptedException, Exception {
         boolean teEsquerra = false;
-        
         while (true) {
             if (!teEsquerra) {
                 teEsquerra = agafaForquillaEsquerra();
@@ -73,8 +72,8 @@ public class Filosof extends Thread {
                 }
             }
             if (teEsquerra) {
-                boolean rightAcquired = agafaForquillaDreta();
-                if (rightAcquired) {
+                boolean tedreta = agafaForquillaDreta();
+                if (tedreta) {
                     System.out.println("Filòsof: " + this.getName() + " agafa la forquilla dreta " + this.forquillaDreta.getForquilla());
                     return;
                 } else {
