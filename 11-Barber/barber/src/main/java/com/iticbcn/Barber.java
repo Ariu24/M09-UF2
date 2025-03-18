@@ -3,33 +3,40 @@ package com.iticbcn;
 import java.util.Random;
 
 public class Barber extends Thread {
+    private String nom;
 
     public Barber(String nom) {
-        super(nom);
+        this.nom = nom;
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         while (true) {
-            synchronized(Barberia.barberia.condBarber){
-                Client client = Barberia.barberia.seguentClient();
-                if (client != null) {
-                    System.out.println(getName() + " està tallant el cabell a " + client.getName());
-                    Random rand = new Random();
-                    int tempsAleatori = rand.nextInt(101);
-                    int tempsTotal = 900 + tempsAleatori;
+            Client client;
+            synchronized(Barberia.getInstance().condBarber) {
+                client = Barberia.getInstance().seguentClient();
+                if (client == null) {
                     try {
-                        Thread.sleep(tempsTotal);
+                        System.out.println("Ningú en espera");
+                        System.out.println("Barber " + nom + " dormint");
+                        Barberia.getInstance().condBarber.wait();
+                        client = Barberia.getInstance().seguentClient();
                     } catch (Exception e) {
                         System.out.println(e);
                     }
-                }else if (client == null){
-                    try{
-                        System.out.println(getName() + " dorm");
-                        Barberia.barberia.condBarber.wait();
-                    }catch(Exception e){
-                        System.out.println(e);
-                    }
+                }
+            }
+            if (client != null) {
+                System.out.println("Li toca al client " + client.getNom());
+                System.out.println("Tallant cabell a " + client.getNom());
+                client.tallarseElCabell();
+                Random rand = new Random();
+                int tempsAleatori = rand.nextInt(100);
+                int tempsTotal = 900 + tempsAleatori;
+                try {
+                    Thread.sleep(tempsTotal);
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
             }
         }

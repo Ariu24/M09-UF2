@@ -1,14 +1,17 @@
 package com.iticbcn;
 
-public class Client extends Thread {
-    public Client(int numero){
-        super(Integer.toString(numero));
+public class Client {
+    private String nom;
+
+    public Client(int id) {
+        this.nom = "Client-" + id;
     }
 
-    public String getNom(){return super.getName();}
-    
-    public void tallarseElCabell(){
-        
-        
+    public String getNom() {
+        return this.nom;
+    }
+
+    public void tallarseElCabell() {
     }
 }
+
